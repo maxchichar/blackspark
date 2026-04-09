@@ -51,8 +51,8 @@ func main() {
 
 ### Explanation:
 
-* os.Create is used to create a new file or truncate an existing file. It returns a file pointer and an error.
-* file.WriteString writes a string to the file.
+* `os.Create` is used to create a new file or truncate an existing file. It returns a file pointer and an error.
+* `file.WriteString` writes a string to the file.
 * Error Handling: Go’s error handling pattern requires us to explicitly check for errors after every operation, like file creation and writing.
 
 While this approach works well for simple use cases, real-world scenarios often require more advanced strategies for efficiency, error management, and large data handling.
@@ -65,7 +65,7 @@ When writing to files in Go, performance is important, especially when dealing w
 
 One of the best techniques for optimizing file writes in Go is using buffered writing. Writing to files byte-by-byte can be inefficient, especially for large amounts of data. By buffering the data before writing it to the file, you can significantly improve the performance of file I/O operations.
 
-Go’s bufio.Writer provides a buffered writer that allows you to write data in larger chunks.
+Go’s `bufio.Writer` provides a buffered writer that allows you to write data in larger chunks.
 
 ```go
 package main
@@ -104,15 +104,15 @@ func main() {
 
 ### Explanation:
 
-* bufio.NewWriter creates a buffered writer that writes to the specified file.
-* writer.Flush() ensures that all data in the buffer is written to the file. This is important because buffered writes are not flushed to the file until you explicitly call Flush().
+* `bufio.NewWriter` creates a buffered writer that writes to the specified file.
+* `writer.Flush()` ensures that all data in the buffer is written to the file. This is important because buffered writes are not flushed to the file until you explicitly call `Flush()`.
 * Using a buffered writer significantly reduces the number of system calls and improves performance, especially for large files or frequent writes.
 
 ### 2.2 Managing File Permissions
 
-File permissions are often a crucial aspect of file handling, especially in environments where multiple users or processes access the files. By default, Go’s os.Create function creates files with the permission mode 0666 (read and write for all users). However, you may need more control over the permissions.
+File permissions are often a crucial aspect of file handling, especially in environments where multiple users or processes access the files. By default, Go’s `os.Create` function creates files with the permission mode `0666` (read and write for all users). However, you may need more control over the permissions.
 
-You can customize the file creation permissions using os.OpenFile.
+You can customize the file creation permissions using `os.OpenFile`.
 
 ```go
 package main
@@ -144,8 +144,8 @@ func main() {
 
 ### Explanation:
 
-* os.OpenFile is used with the flag os.O_CREATE (create the file if it doesn’t exist) and os.O_WRONLY (write-only access).
-* 0600 sets the file permission to allow only the file owner to read and write.
+* `os.OpenFile` is used with the flag `os.O_CREATE` (create the file if it doesn’t exist) and `os.O_WRONLY` (write-only access).
+* `0600` sets the file permission to allow only the file owner to read and write.
 * This is especially useful for storing sensitive data that should not be accessed by unauthorized users.
 
 ## 3. Advanced Techniques: Writing Large Files and Handling Errors
