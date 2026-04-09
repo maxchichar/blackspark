@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	"log"
 	"os"
 )
@@ -9,7 +11,6 @@ func main()  {
 	
 	if len(os.Args) != 3 {
 		log.Fatal("Usage: go run . input.txt output.txt")
-		os.Exit(1)
 	}
 
 	inputFile := os.Args[1]
@@ -19,22 +20,32 @@ func main()  {
 		log.Fatal("✗ Both file name cannot be the same")
 	}
 	
-	file, err := os.OpenFile("sample.txt", os.O_RDWR|os.O_CREATE, 0664)
+	file, err := os.Open(inputFile)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err := file.Close(); err != nil{ // we automatically close at the end of our program
-		log.Fatal(err)
+	defer file.Close() // we automatically close at the end of our program
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines) // line by line reading
+	for scanner.Scan(){
+		scanner.Text()
 	}
 	
-	
-	file2, err := os.OpenFile("result.txt", os.O_RDWR|os.O_CREATE, 0664)
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading input:", err)
+	}
+
+	file2, err := os.OpenFile(outputFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err := file2.Close(); err != nil{ // we automatically close at the end of our program
-		log.Fatal(err)
-	}
+	defer file2.Close() // we automatically close at the end of our program
+	
+	writer := bufio.NewWriter(file2)
+	writer.Flush()
+
+	fmt.Println("Program successful")
 
 }
 
