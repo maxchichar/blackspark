@@ -49,6 +49,30 @@ func ToCapLastWord(text []string) []string {
 	return text
 }
 
+func LastIndex(word []string, index int) []string {
+	lastIndex := len(word)-1
+
+	word[index], word[lastIndex] = word[lastIndex], word[index]
+	word = word[:len(word)-1]
+	return word
+}
+
+func to_upper(text []string, n int) []string {
+	lastIndex := len(text) - 1 
+
+	for i := 0; i < lastIndex; i++ {
+		if text[i] == "(up)" {
+			text[len(text)-n] = cases.Upper(language.English).String(text[len(text)-n])
+			text[i], text[lastIndex] = text[lastIndex], text[i]
+			text = text[:lastIndex]
+			// if text[i] == "(up)" {
+			// 	text[i] = strings.ReplaceAll(text[i], "(up)", "")
+			// }
+		}
+	}
+	return text
+}
+
 func main()  {
 	scores := []int{1,2,3,4,5,6}
 	fmt.Println(scores)
@@ -70,4 +94,12 @@ func main()  {
 
 	result := []string{"master", "sparkyechox", "(cap)"}
 	fmt.Println(ToCapLastWord(result))
+
+	word := []string{"my", "name", "is", "Chibueze"}
+	output := LastIndex(word, 3) // removes the index you want just by changing the index number
+	fmt.Println(output)
+
+	text := []string{"i", "love", "(up)", "golang"}
+	out := to_upper(text, 3)
+	fmt.Println(out)
 }
